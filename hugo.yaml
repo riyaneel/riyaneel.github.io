@@ -1,0 +1,69 @@
+baseURL: https://riyaneel.github.io/
+languageCode: en-us
+title: System & Software Engineering
+theme: 'PaperMod'
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+params:
+  env: production
+  title: "System & Software Engineering"
+  description: "Backend, Low-Level Optimization, C, C++, Java, ASM and Hardware-aware programming."
+  author: "Riyane El Qoqui"
+
+  defaultTheme: "dark"
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  math: true
+
+  profileMode:
+    enabled: true
+    title: "Software & System Engineer"
+    subtitle: "Backend, C++, ASM, Memory Management & High Performance Computing."
+    imageWidth: 120
+    imageHeight: 120
+    buttons:
+      - name: Posts
+        url: posts
+      - name: GitHub
+        url: https://github.com/riyaneel
+
+  socialIcons:
+    - name: GitHub
+      url: https://github.com/riyaneel
+    - name: LinkedIn
+      url: https://www.linkedin.com/in/riyaneel/
+
+  mainSections:
+    - posts
+
+menu:
+  main:
+    - identifier: archives
+      name: Archives
+      url: /archives/
+      weight: 10
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 20
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 30
+
+outputs:
+  home:
+    - HTML
+    - JSON
+    - RSS

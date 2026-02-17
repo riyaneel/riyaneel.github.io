@@ -1,0 +1,10 @@
+.main {
+    max-width: 800px;
+    margin: auto;
+}
+
+.chroma {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333;
+    border-radius: 4px;
+}
