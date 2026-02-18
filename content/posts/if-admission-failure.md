@@ -15,7 +15,7 @@ summary = "Why your Clean Code is poison for the CPU pipeline. Analyzing branch 
 ## Abstract
 
 Modern computer science has seduced us with a comfortable lie: that code is a logical tree of decisions. We are taught
-to write `if this, then that`. While this satisfies the human mind, it terrorizes the silicon.
+to write `if this, then that`. While this satisfies the human mind, it terrorizes the silicium.
 
 To a modern superscalar processor, a conditional branch is not a "decision"; it is a hazard. It is a gamble that
 threatens to stall the instruction pipeline and waste precious cycles. True high-performance engineering is not about
@@ -285,17 +285,20 @@ _Compiled with `-O3`._
 ```asm
 clamp_naive:
 .LFB11:
-	vcomiss	.LC0(%rip), %xmm0               ; Compare val with 255.0
-	ja	.L5                                 ; Jump if Above (the hazard)
-	vxorps	%xmm2, %xmm2, %xmm2             ; Load 0.0
-	vxorps	%xmm1, %xmm1, %xmm1             ; ???
-	vcmpnltss	%xmm2, %xmm0, %xmm2         ; ???
-	vblendvps	%xmm2, %xmm0, %xmm1, %xmm1  ; ???
-	vmovaps	%xmm1, %xmm0                    ; ???
-	ret
+    vcomiss    .LC0(%rip), %xmm0           ; Compare val with 255.0
+    ja .L5                                 ; Jump if Above (The Hazard: Pipeline Flush risk)
+    vxorps     %xmm2, %xmm2, %xmm2         ; Generate 0.0 (xmm2 = 0.0)
+    vxorps     %xmm1, %xmm1, %xmm1         ; Generate 0.0 (xmm1 = 0.0, for the blend)
+    vcmpnltss  %xmm2, %xmm0, %xmm2         ; Compare Not Less Than (val >= 0.0 ?)
+                                           ; Generates a mask in xmm2 (0xFFFFFFFF or 0x0)
+    vblendvps  %xmm2, %xmm0, %xmm1, %xmm1  ; Variable Blend:
+                                           ; If mask is 1 (val >= 0), take xmm0 (val)
+                                           ; If mask is 0 (val < 0),  take xmm1 (0.0)
+    vmovaps    %xmm1, %xmm0                ; Move result to return register
+    ret
 .L5:
-	vmovss	.LC0(%rip), %xmm0               ; ???
-	ret
+    vmovss     .LC0(%rip), %xmm0           ; Return 255.0
+    ret
 ```
 
 **Verdict:** Two jumps. Two potential pipeline flushes per pixel. This is execution by "Stop and Go".
@@ -323,12 +326,11 @@ __m256 clamp_branchless(__m256 val) {
 ```asm
 clamp_branchless:
 .LFB7296:
-	vbroadcastss	.LC0(%rip), %ymm1   ; ...
-	vminps	%ymm1, %ymm0, %ymm0         ; Vector Min Parallel Single
-	vxorps	%xmm1, %xmm1, %xmm1         ; ???
-	vcmpltps	%ymm0, %ymm1, %ymm1     ; Vector Max Parallel Single
-	vandps	%ymm1, %ymm0, %ymm0         ; ???
-	ret                                 ; ???
+    vbroadcastss   .LC0(%rip), %ymm1   ; Load 255.0 into all 8 lanes
+    vminps         %ymm1, %ymm0, %ymm0 ; Vector Min: Clamps upper bound
+    vxorps         %xmm1, %xmm1, %xmm1 ; Generate 0.0 in all lanes
+    vmaxps         %xmm1, %ymm0, %ymm0 ; Vector Max: Clamps lower bound
+    ret                                ; Return packed result (8 pixels processed)
 ```
 
 #### The breakdown
