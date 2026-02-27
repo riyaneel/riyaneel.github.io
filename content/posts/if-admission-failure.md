@@ -8,7 +8,7 @@ summary = "Why your Clean Code is poison for the CPU pipeline. Analyzing branch 
 
 # The "If" is an admission of failure: When algebra replaces decision
 
-### **Subtitle:** Why your "Clean Code" is poison for the CPU pipeline.
+> Why your "Clean Code" is poison for the CPU pipeline.
 
 ---
 
