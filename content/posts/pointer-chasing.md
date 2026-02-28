@@ -48,7 +48,7 @@ arbitrary insertions and deletions, while a contiguous array (`std::vector`) yie
 
 On a whiteboard, $O(1)$ scales infinitely better than $O(N)$. In physical execution, however, this model is dangerously
 incomplete because it operates under the **Uniform Memory Access (UMA)** fallacy. It assumes that fetching *any* byte
-from memory incurs the exact same physical cost. In the 1980s, this was justifiable. In February 2026, with
+from memory incurs the exact same physical cost. In the 1980s, this was justifiable. With
 architectures like AMD Zen 5 and Intel Arrow Lake retiring 6 to 8 instructions per cycle, this assumption is an
 architectural hazard.
 
@@ -360,7 +360,7 @@ Intrusive List Time: 0.426 ms
 
 ```
 
-The arithmetic is brutal. In a 2026 ultra-low latency trading environment, a 276-millisecond latency spike means your
+The arithmetic is brutal. In a ultra-low latency trading environment, a 276-millisecond latency spike means your
 firm just absorbed a massive loss, and your system is effectively offline.
 
 Let’s translate these latencies into architectural realities:
