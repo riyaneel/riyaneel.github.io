@@ -6,8 +6,6 @@ tags = ["cpu", "optimization", "cpp", "assembly", "branchless"]
 summary = "Why your Clean Code is poison for the CPU pipeline. Analyzing branch misprediction costs."
 +++
 
-# The "If" is an admission of failure: When algebra replaces decision
-
 > Why your "Clean Code" is poison for the CPU pipeline.
 
 ---
