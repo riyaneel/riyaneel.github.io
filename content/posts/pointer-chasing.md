@@ -278,8 +278,8 @@ Instead of fetching a 64-bit pointer from RAM, the compiler uses the `lea` (Load
 calculate the exact physical location of the node within the contiguous Arena.
 
 Because our `Node` is exactly 12 bytes, the compiler calculates the offset as `index * 12`. It does this branchlessly
-and without multiplication instructions using two nested ALUs: `(index * 3) * 4`. These `lea` instructions execute in *
-*1 clock cycle** on the CPU's Arithmetic Logic Units.
+and without multiplication instructions using two nested ALUs: `(index * 3) * 4`. These `lea` instructions execute in
+**1 clock cycle** on the CPU's Arithmetic Logic Units.
 
 Furthermore, because the Arena is contiguous and sequentially allocated, the hardware's Stride Prefetcher recognizes the
 memory access pattern. It proactively streams the 64-byte cache lines holding the next Arena nodes into the L1 cache
